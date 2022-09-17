@@ -1,27 +1,26 @@
-pwd()
+using Pkg
 
-f = open("planilha.csv")
+Pkg.add("XLSX")
 
-close(f)
+using XLSX
 
-totallines = open("planilha.csv") do f 
+XLSX.openxlsx("planilha.xlsx", enable_cache = false) do f
 
-    linecounter = 0
+    sheet = f["Sheet1"]
 
-    for line in eachline(f)
+    for r in XLSX.eachrow(sheet)
 
-        linecounter += 1
+        rn = XLSX.row_number(r)
+
+        v1 = r[1]
+
+        v2 = r[2]
+
+        v3 = r["B"]
+
+        v4 = r[4]
+
+        println("v1=$v1, v2=$v2, v3=$v3, v4=$v4 ")
+
     end
-
-    (linecounter)
-
 end
-
-read(f)
-
-close(f)
-
-f = open("planilha.csv")
-
-lines = readlines(f)
-
