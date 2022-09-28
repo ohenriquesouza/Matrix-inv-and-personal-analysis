@@ -1,5 +1,8 @@
 import pandas as pd
+import time
 import numpy as np
+
+starting = time.time()
 
 #file reading
 aux = pd.read_excel(r"planilha.xls")
@@ -27,18 +30,29 @@ while(i+12 < 6199):
     default_matrix[0:12, 10] = round(aux["VALE5"][i:i+12], 2 )
     default_matrix[0:12, 11] = round(aux["ABEV3"][i:i+12], 2 )
 
-    #is possible to invert
-    if(np.linalg.det(default_matrix) != 0):
+    isaNaN = np.isnan(default_matrix)
 
-        #numpy library inverse operation
-        matrix_inv = np.linalg.inv(default_matrix)
+    #NaN validation
+    if(isaNaN.any() != 1):
 
-        #user output
-        #print(default_matrix)
-        print(matrix_inv)
-        print("\n-----------------------------------------------------------------------------\n")
-    #is not possible to invert  
+        #is possible to invert
+        if(np.linalg.det(default_matrix) != 0):
+
+            #numpy library inverse operation
+            matrix_inv = np.linalg.inv(default_matrix)
+
+            #user output
+            print("\n-----------------------------------------------------------------------------\n")
+            print(default_matrix)
+            print("\n#############################################################################\n")
+            print(matrix_inv)
+            print("\n-----------------------------------------------------------------------------\n")
+        #is not possible to invert  
+        else:
+            print("This matrix cannot be inverted!")
+
+        i = i + 1
     else:
-        print("This matrix cannot be inverted!")
-
-    i = i + 1
+        print("Some value in your file is not a number")
+    
+print("%s" % (time.time() - starting))

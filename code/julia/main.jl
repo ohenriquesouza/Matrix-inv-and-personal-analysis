@@ -1,26 +1,41 @@
-using Pkg
-
-Pkg.add("XLSX")
+using LinearAlgebra
 
 using XLSX
 
-XLSX.openxlsx("planilha.xlsx", enable_cache = false) do f
+@time begin
 
-    sheet = f["Sheet1"]
+    XLSX.openxlsx("planilha.xlsx", enable_cache = false) do f
 
-    for r in XLSX.eachrow(sheet)
+        sheet = f["Plan1"]
+        
+        StartingLine = "B"
+        i = 2
+        FinalColumn = "M"
+        j = 13
 
-        rn = XLSX.row_number(r)
+        for j in 13:6199
+            
+            Line = StartingLine * string(i) #gambiarra para pular a linha 1
+            
+            Column = FinalColumn * string(j) #gambiarra para limitar o tamanho da matriz
+            
+            myMatrix = sheet["$Line:$Column"]
 
-        v1 = r[1]
+            if det(Float64.(myMatrix)) != 0
 
-        v2 = r[2]
+                
+                println(inv((Float64.(myMatrix))))
+                println("###############################################################################################################################")
+            
+            else
+                println("This matrix cannot be inverted!")
+            
+            end
 
-        v3 = r["B"]
+            i = i+1
 
-        v4 = r[4]
-
-        println("v1=$v1, v2=$v2, v3=$v3, v4=$v4 ")
+        end
 
     end
+
 end
