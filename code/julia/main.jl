@@ -13,22 +13,34 @@ using XLSX
         FinalColumn = "M"
         j = 13
 
-        for j in 13:6199
+        Line = StartingLine * string(i) #gambiarra para pular a linha 1
             
-            Line = StartingLine * string(i) #gambiarra para pular a linha 1
-            
-            Column = FinalColumn * string(j) #gambiarra para limitar o tamanho da matriz
+        Column = FinalColumn * string(j) #gambiarra para limitar o tamanho da matriz
+
+        contador = 0
+
+        for j in 13:31
+
+            contador = contador + 1
+
+            println(contador)
             
             myMatrix = sheet["$Line:$Column"]
 
-            if det(Float64.(myMatrix)) != 0
+            determinante = det(Float32.(myMatrix))
 
+            if determinante != 0
+
+                inversa = inv(Float32.(myMatrix))
                 
-                println(inv((Float64.(myMatrix))))
-                println("###############################################################################################################################")
+                println(inversa)
+                
+                println("\n")
             
             else
                 println("This matrix cannot be inverted!")
+
+                i = i+1
             
             end
 
